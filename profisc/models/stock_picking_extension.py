@@ -21,7 +21,7 @@ def get_wtn_issuer(company):
 
 
 class StockPickingExtension(models.Model):
-    _inherit = 'stock.picking'
+    _inherit = ['stock.picking']
 
     profisc_qr_code_img = fields.Binary("QR Code", attachment=True)
     profisc_fisc_type = fields.Char(string='Fiscalization Type')

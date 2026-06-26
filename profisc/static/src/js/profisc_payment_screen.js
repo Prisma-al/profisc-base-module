@@ -2,6 +2,7 @@
 
 
 import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
+import { usePos } from "@point_of_sale/app/store/pos_hook";
 import { patch } from "@web/core/utils/patch";
 import { useEffect } from "@odoo/owl";
 import { _t } from "@web/core/l10n/translation";
@@ -10,13 +11,14 @@ import { useService } from "@web/core/utils/hooks";
     patch(PaymentScreen.prototype, {
         setup() {
             super.setup();
+            this.pos = usePos();
             this.notification = useService("notification");
             this._profisc_all_payment_methods = [...this.payment_methods_from_config];
             useEffect(
                 () => {
-                    this._applyProfiscPaymentMethodFilter(this.pos.getOrder());
+                    this._applyProfiscPaymentMethodFilter(this.pos.get_order());
                 },
-                () => [this.pos.getOrder()]
+                () => [this.pos.get_order()]
             );
         },
         async onClickDraft() {
@@ -28,7 +30,7 @@ import { useService } from "@web/core/utils/hooks";
 
         async validateOrder(isForceValidate, options = {}) {
             // Custom validation logic.
-            const order = this.pos.getOrder();
+            const order = this.pos.get_order();
 
             // Handle is_draft (for backwards compatibility)
             const isDraft = options.is_draft !== undefined ? options.is_draft : false;
@@ -62,18 +64,18 @@ import { useService } from "@web/core/utils/hooks";
         },
 
         _custom_validation_method(order) {
-            let order_lines = order.getOrderlines() || [];
+            let order_lines = order.get_orderlines() || [];
             let pmt_lines = order.payment_ids || [];
             let cash_count_nr = 0;
             let non_cash_count_nr = 0;
             let has_zero_qty = 0;
             let profisc_fisc_type = parseInt(order.profisc_fisc_type)
 
-            const totalAmount = order.amount_total;
+            const totalAmount = order.get_total_with_tax();
 
             console.log("Order total ", totalAmount)
             order_lines.forEach((ol) => {
-                if (ol.getQuantity() === 0) {
+                if (ol.get_quantity() === 0) {
                     has_zero_qty++;
                 }
             });
@@ -92,7 +94,7 @@ import { useService } from "@web/core/utils/hooks";
                 return false;
             }
 
-            let selected_partner = order.getPartner?.();
+            let selected_partner = order.get_partner?.();
             //maxAmount eshte fusha Vlera Maksimale e vendosur te pos config
             let maxAmount = this.pos.config.max_pos_payment_amount;
 

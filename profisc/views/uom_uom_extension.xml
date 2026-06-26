@@ -3,10 +3,16 @@
         <record id="uom_uom_extension" model="ir.ui.view">
             <field name="name">Profisc:: uom_uom_extension</field>
             <field name="model">uom.uom</field>
-            <field name="inherit_id" ref="uom.product_uom_form_view"/>
+            <field name="inherit_id" ref="uom.product_categ_form_view"/>
             <field name="arch" type="xml">
-                <xpath expr="//group[@name='uom_details']/field[@name='name']" position="after">
-                    <field name="profisc_uom_val"/>
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='uom_lines']/field[@name='uom_ids']/list[1]/field[@name='name']"
+                       position="after">
+                    <field name="profisc_uom_val" optional="show" widget="selection">
+                        <option t-foreach="record.profisc_uom_val" t-as="option" t-key="option[0]" t-value="option[0]">
+                            <t t-esc="option[1]"/>
+                            (<t t-esc="option[0]"/>)
+                        </option>
+                    </field>
                 </xpath>
             </field>
         </record>

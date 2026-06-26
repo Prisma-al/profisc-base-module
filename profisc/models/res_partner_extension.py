@@ -2,7 +2,7 @@ from odoo import api, fields, models
 
 
 class ResPartnerExtension(models.Model):
-    _inherit = 'res.partner'
+    _inherit = ['res.partner']
 
     profisc_customer_vat_type = fields.Selection([
         ('ID', 'ID'),

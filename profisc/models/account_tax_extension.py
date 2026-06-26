@@ -6,7 +6,7 @@ _logger = logging.getLogger(__name__)
 
 
 class AccountTaxExtension(models.Model):
-    _inherit = 'account.tax'
+    _inherit = ['account.tax']
 
     profisc_tax_exempt_reason = fields.Selection(
         [('EXPORT_OF_GOODS', 'EXPORT_OF_GOODS'), ('TAX_FREE', 'TAX_FREE'), ('TYPE_1', 'TYPE_1'), ('TYPE_2', 'TYPE_2'),

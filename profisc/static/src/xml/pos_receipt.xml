@@ -1,89 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 
-    <!-- Extend OrderReceipt: add fiscal fields after footer -->
+    <!-- Extend OrderReceipt -->
     <t t-name="pos_receipt_header_inherit"
        t-inherit="point_of_sale.OrderReceipt"
        t-inherit-mode="extension">
 
-        <xpath expr="//img[@id='posqrcode']/ancestor::div[hasclass('gap-2')][1]" position="replace"/>
-
         <xpath expr="//div[@class='after-footer']" position="inside">
-            <t t-if="order.profisc_iic">
+            <t t-if="props.data.profisc_iic">
                 <div style="text-align:center;" class="profisc_fields" >
                     <div>------------------------</div>
-                    <t t-if="order.profisc_ubl_id">
+                    <t t-if="props.data.profisc_ubl_id">
                         <div>
                             Numri i fatures:
-                            <t t-esc="order.profisc_ubl_id"/>
+                            <t t-esc="props.data.profisc_ubl_id"/>
                         </div>
                     </t>
                     <div>
                         NSLF:
-                        <t t-esc="order.profisc_iic"/>
+                        <t t-esc="props.data.profisc_iic"/>
                     </div>
-                    <t t-if="order.profisc_fic">
+                    <t t-if="props.data.profisc_fic">
                         <div>
                             NIVF:
-                            <t t-esc="order.profisc_fic"/>
+                            <t t-esc="props.data.profisc_fic"/>
                         </div>
                     </t>
-                    <t t-if="order.profisc_eic">
+                    <t t-if="props.data.profisc_eic">
                         <div>
                             Eic:
-                            <t t-esc="order.profisc_eic"/>
+                            <t t-esc="props.data.profisc_eic"/>
                         </div>
                     </t>
-                    <t t-if="order.profisc_qr_code">
-                        <div id="qrcode">
-                            <img style="width:200px;height:200px"
-                                 class="profisc_qr_code"
-                                 t-att-src="order.profisc_qr_code"
-                                 alt="qr_code"/>
-                        </div>
-                    </t>
+                    <div id="qrcode">
+                        <img style="width:200px;height:200px"
+                             class="profisc_qr_code"
+                             t-att-src="props.data.qrCode"
+                             alt="qr_code"/>
+                    </div>
                     <div>
                          Gjeneruar nga: ProFisc by Prisma
                     </div>
                 </div>
             </t>
             <!-- Customer info -->
-            <t t-if="order.partner_id">
+            <t t-if="props.data.partner">
                 <div style="text-align:center;">
                     <div>--------------------------------</div>
                     <div>Customer</div>
-                    <div>Name:<t t-esc="order.partner_id.name"/></div>
-                    <div t-if="order.partner_id.vat">Vat:<t t-esc="order.partner_id.vat"/></div>
-                    <div t-if="order.partner_id.street">Address:<t t-esc="order.partner_id.street"/></div>
+                    <div>Name:<t t-esc="props.data.partner.name"/></div>
+                    <div>Vat:<t t-esc="props.data.partner.vat"/></div>
+                    <div>Address:<t t-esc="props.data.partner.address"/></div>
                 </div>
             </t>
         </xpath>
     </t>
 
-    <!-- Extend ReceiptHeader: replace company contact but keep the class -->
+    <!-- Extend ReceiptHeader -->
     <t t-name="profisc.ReceiptHeader"
        t-inherit="point_of_sale.ReceiptHeader"
        t-inherit-mode="extension">
 
         <xpath expr="//div[hasclass('pos-receipt-contact')]" position="replace">
-            <div class="pos-receipt-contact">
+            <t t-if="props.data.company">
                 <div>--------------------------------</div>
-                <t t-if="order.company.name">
+                <t t-if="props.data.company.name">
                     <div>
-                        <t t-esc="order.company.name"/>
+                        <t t-esc="props.data.company.name"/>
                     </div>
                 </t>
-                <t t-if="order.company.vat">
+                <t t-if="props.data.company.vat">
                     <div>NUIS:
-                        <t t-esc="order.company.vat"/>
+                        <t t-esc="props.data.company.vat"/>
                     </div>
                 </t>
-                <t t-if="order.company.street or order.company.city">
+                <t t-if="props.data.company.street or props.data.company.city">
                     <div>Adresa:
-                        <t t-esc="order.company.street"/> <t t-esc="order.company.city"/>
+                        <t t-esc="props.data.company.street"/> <t t-esc="props.data.company.city"/>
                     </div>
                 </t>
-            </div>
+            </t>
         </xpath>
     </t>
 

@@ -3,7 +3,7 @@ from odoo.exceptions import UserError
 
 
 class ResCompanyExtension(models.Model):
-    _inherit = 'res.company'
+    _inherit = ['res.company']
 
     profisc_company_id = fields.Char("Company id", default="1")
     profisc_login_endpoint = fields.Char("Login endpoint", default="/public/authenticate")

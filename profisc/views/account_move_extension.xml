@@ -71,7 +71,7 @@
                         e-Invoice PDF
                     </button>
                     <!--<button name="get_qr_code" type="object" groups="account.group_account_invoice"
-                            invisible="state != 'posted' or profisc_fisc_status == 'Y'">
+                            attrs="{'invisible':['|', ('state', '!=', 'posted'),('profisc_fisc_status', 'in', ('Y'))]}">
                         <i class="fa fa-qrcode" style="color:blue"/>
                         QR Code
                     </button>-->

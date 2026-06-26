@@ -10,8 +10,8 @@ patch(ActionpadWidget.prototype, {
     },
 
     async onClickSendOrder() {
-        const order = this.pos.getOrder();
-        if (!order || order.isEmpty()) {
+        const order = this.pos.get_order();
+        if (!order || order.is_empty()) {
             console.warn("No active order found or order is empty");
             return;
         }
@@ -24,7 +24,7 @@ patch(ActionpadWidget.prototype, {
                 order.sent_fiscal = false; // Don't fiscalize kitchen orders
                 await this.pos.sendOrderInPreparationUpdateLastChange(order);
 
-                const orderLines = order.getOrderlines?.() || [];
+                const orderLines = order.get_orderlines?.() || [];
                 const lines = orderLines
                     .map(line => ({
                         product_id: line.product_id?.id || null,

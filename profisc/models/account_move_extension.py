@@ -22,6 +22,7 @@ class DateEncoder(json.JSONEncoder):
 
 class AccountMoveExtension(models.Model):
     _inherit = 'account.move'
+    _name = 'account.move'
 
 
     profisc_cis_type = fields.Selection([('0', 'No Fiscalization'), ('-1', 'Fiscalization'), ('1', 'E-invoice')],

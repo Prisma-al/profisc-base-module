@@ -26,4 +26,3 @@ from . import profisc_payment_methods
 from . import pos_payment_method
 from . import account_move_line_extension
 from . import account_move_reversal_extension
-

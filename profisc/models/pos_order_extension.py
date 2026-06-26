@@ -345,7 +345,7 @@ class PosOrder(models.Model):
                     'profisc_iic': res['iic'],
                     'profisc_fic': res['fic'],
                     'profisc_eic': res['eic'],
-                    'profisc_qr_code': self._qr_url_to_data_uri(res.get('qrUrl', ''))
+                    'profisc_qr_code': res['qrUrl']
                 })
                 self.env.cr.commit()
 
@@ -369,23 +369,12 @@ class PosOrder(models.Model):
         else:
             userError('faultDescription', res)
 
-    def _qr_url_to_data_uri(self, url):
-        """Convert a QR code URL to a data:image/png;base64 URI for POS receipt display."""
-        if not url:
-            return url
-        try:
-            encoded = self.env['other_functions'].createQrCode(url)
-            return 'data:image/png;base64,' + encoded
-        except Exception as e:
-            _logger.error('Failed to generate QR code image: %s', e)
-            return url
-
     def updateRecord(self, record, res):
         record.write({
             'profisc_iic': res['iic'],
             'profisc_fic': res['fic'],
             'profisc_eic': res['eic'],
-            'profisc_qr_code': self._qr_url_to_data_uri(res.get('qrUrl', '')),
+            'profisc_qr_code': res['qrUrl'],
             'profisc_status_control': '3',
             'profisc_fisc_status': 'Y',
             'profisc_fic_error_code': '100',
@@ -396,24 +385,24 @@ class PosOrder(models.Model):
         self._force_create_invoice(record)
 
     def createInvoicePayload(self, record):
-        # _logger.info(
-        #     "DEBUG REF CHECK | refunded_order_id=%s | return_order_id=%s | origin=%s | total=%s",
-        #     getattr(record, "refunded_order_id", False),
-        #     getattr(record, "return_order_id", False),
-        #     getattr(record, "origin_id", False),
-        #     record.amount_total,
-        # )
+        _logger.info(
+            "DEBUG REF CHECK | refunded_order_id=%s | return_order_id=%s | origin=%s | total=%s",
+            getattr(record, "refunded_order_id", False),
+            getattr(record, "return_order_id", False),
+            getattr(record, "origin_id", False),
+            record.amount_total,
+        )
 
         ref_order = self._get_refund_origin(record)
         is_refund = bool(ref_order)
 
-        # _logger.info(
-        #     "Refund detection => order=%s origin=%s has_iic=%s total=%s",
-        #     record.name,
-        #     ref_order.name if ref_order else None,
-        #     # bool(getattr(ref_order, "profisc_iic", False)) if ref_order else False,
-        #     # record.amount_total
-        # )
+        _logger.info(
+            "Refund detection => order=%s origin=%s has_iic=%s total=%s",
+            record.name,
+            ref_order.name if ref_order else None,
+            # bool(getattr(ref_order, "profisc_iic", False)) if ref_order else False,
+            # record.amount_total
+        )
 
         # --- Common invoice fields ---
         current_time = datetime.now().strftime("%H:%M:%S")

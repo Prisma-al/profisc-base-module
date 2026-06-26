@@ -25,7 +25,6 @@
         'views/pos_config_extension.xml',
         'views/pos_tree_order_extension.xml',
         'views/profisc_uoms_management.xml',
-        'views/uom_uom_extension.xml',
         'views/profisc_profisc_management.xml',
         'views/stock_picking_extension.xml',
         'views/stock_warehouse_extension.xml',

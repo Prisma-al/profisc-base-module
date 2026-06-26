@@ -63,14 +63,14 @@
         </field>
     </record>
     <record id="profisc_uoms_tree" model="ir.ui.view">
-        <field name="name">profisc.uoms.list</field>
+        <field name="name">profisc.uoms.tree</field>
         <field name="model">profisc.uoms</field>
         <field name="arch" type="xml">
-            <list string="Profisc Uoms">
+            <tree string="Profisc Uoms">
                 <field name="name"/>
                 <field name="code"/>
                 <field name="is_active"/>
-            </list>
+            </tree>
         </field>
     </record>
 
@@ -78,23 +78,23 @@
     <record id="action_profisc_uoms" model="ir.actions.act_window">
         <field name="name">Uoms Management</field>
         <field name="res_model">profisc.uoms</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">tree,form</field>
         <field name="view_id" ref="profisc_uoms_tree"/>
     </record>
     <record id="action_profisc_wtn_vehicles" model="ir.actions.act_window">
         <field name="name">Vehicles</field>
         <field name="res_model">profisc.wtn_vehicles</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">tree,form</field>
     </record>
     <record id="action_profisc_wtn_business_units" model="ir.actions.act_window">
         <field name="name">Business Units</field>
         <field name="res_model">profisc.business_units</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">tree,form</field>
     </record>
     <record id="action_profisc_wtn_tcr" model="ir.actions.act_window">
         <field name="name">TCR</field>
         <field name="res_model">profisc.tcr</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">tree,form</field>
     </record>
     <menuitem id="menu_profisc_management" name="Profisc management" sequence="10"/>
     <menuitem id="menu_bu_tcr" name="BU/TCR management" sequence="11" parent="menu_profisc_management"/>
