@@ -1,0 +1,67 @@
+.pos .pos-logo {
+  height: 80%;
+}
+
+.profisc_fields {
+  font-size: 75%;
+}
+
+.profisc_qr_code {
+  display: block;
+  margin: 0 auto;
+}
+
+.profisc-payment-fiscalization {
+  position: relative;
+  /* width: 300px;
+   margin-bottom: 20px;*/
+}
+
+.profisc-payment-fiscalization select {
+  width: 100%;
+  padding: 12px 40px 12px 16px; /* Adjusted right padding */
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #f7f9fc;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.profisc-payment-fiscalization::after {
+  content: "▼"; /* The chevron */
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #333; /* Adjust as needed */
+  pointer-events: none; /* Ensures the pseudo-element doesn't interfere with the select interaction */
+}
+
+.profisc-payment-fiscalization select:hover {
+  background-color: #ebedf3;
+}
+
+.profisc-payment-fiscalization select:focus {
+  background-color: #e2e8f0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  outline: none;
+}
+
+.profisc-payment-fiscalization {
+  display: none;
+}
+
+
+
+
+/*
+.pos .button.validation {
+  height: calc(var(--btn-height-size) * 2.2);
+
+}*/

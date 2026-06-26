@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="profisc_account_move_extension" model="ir.ui.view">
+            <field name="name">Profisc:: account_move_extension</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='button_draft']"
+                       position="replace">
+                    <button name="button_draft" string="Reset to Draft" type="object"
+                            groups="account.group_account_invoice"
+                            invisible="not show_reset_to_draft_button or profisc_fisc_status_sale == 'Y' "
+                            data-hotkey="r"/>
+                </xpath>
+
+                <group>
+                    <field name="profisc_fisc_downloaded" invisible="1"/>
+                    <field name="profisc_isFiscalized" invisible="1"/>
+                    <field name="move_type" invisible="1"/>
+                </group>
+
+                <xpath expr="//field[@name='invoice_line_ids']/list/field[@name='quantity']" position="after">
+                    <!--                    <field name="profisc_uom" optional="show"/>-->
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <group>
+                        <field name="profisc_cis_type" widget="selection"
+                           readonly="profisc_status_control == '3'" string="CIS Type"/>
+                        <field name="profisc_status_control" widget="selection"
+                               invisible="profisc_cis_type not in ['-1','1']" required="profisc_cis_type != '0'"
+                               string="Status Control"/>
+                        <field name="profisc_profile_id" widget="selection"
+                               readonly="profisc_status_control == '3'" invisible="profisc_cis_type == '0'"
+                               required="profisc_cis_type != '0'"
+                               string="Profile ID"/>
+                        <field name="profisc_invoice_type" widget="selection"
+                               readonly="profisc_status_control == '3'" invisible="profisc_cis_type == '0'"
+                               required="profisc_cis_type != '0'"
+                               string="Invoice Type"/>
+                        <field name="profisc_self_invoice_type" string="Self Invoice Type"
+                               invisible="profisc_profile_id != 'P12'" required="profisc_profile_id == 'P12'"/>
+                        <field name="profisc_reverse_charge" string="Reverse Charge"
+                               invisible="profisc_profile_id != 'P12'"/>
+                        <field name="profisc_bu_code" widget="selection"
+                               readonly="profisc_status_control == '3'" invisible="profisc_cis_type == '0'"
+                               string="Bu Code"/>
+                        <field name="profisc_tcr_code" widget="selection"
+                               readonly="profisc_status_control == '3'" invisible="profisc_cis_type == '0'"
+                               required="profisc_cis_type != '0'"
+                               string="TCR Code"/>
+                        <field name="profisc_currency_rate" readonly="true"/>
+                    </group>
+                </xpath>
+                <xpath expr="//sheet/group" position="after">
+
+                    <hr/>
+                    <button name="send_to_profisc" type="object"
+                            string="Fiskalizo"
+                            class="btn-primary oe_highlight"
+                            groups="account.group_account_invoice"
+                            invisible="profisc_isFiscalized or state != 'posted' or profisc_fisc_status_sale == 'Y'"/>
+                    <button name="get_fisc_pdf" type="object" groups="account.group_account_invoice"
+                            invisible="state != 'posted' or profisc_fisc_status_sale != 'Y' or profisc_fisc_downloaded == True ">
+                        <i class="fa fa-file-pdf-o" style="color:red"/>
+                        Fisc PDF
+                    </button>
+                    <button name="get_e_invoice_pdf" type="object" groups="account.group_account_invoice"
+                            invisible="state != 'posted' or profisc_fisc_status_sale != 'Y' or profisc_einvoice_downloaded == True or move_type == 'in_invoice' or profisc_cis_type != '1'">
+                        <i class="fa fa-file-pdf-o" style="color:green"/>
+                        e-Invoice PDF
+                    </button>
+                    <!--<button name="get_qr_code" type="object" groups="account.group_account_invoice"
+                            invisible="state != 'posted' or profisc_fisc_status == 'Y'">
+                        <i class="fa fa-qrcode" style="color:blue"/>
+                        QR Code
+                    </button>-->
+                </xpath>
+
+                <xpath expr="//group[@id='header_right_group']//field[@name='date']" position="before">
+                    <field name="profisc_reference_invoice_date" string="Reference Invoice Date"
+                           invisible="profisc_profile_id != 'P10'"/>
+                    <field name="profisc_reference_invoice_iic" string="Reference Invoice IIC"
+                           invisible="profisc_profile_id != 'P10'"/>
+                    <field name="profisc_subseq" string="Subseq"
+                           readonly="profisc_status_control == '3'" invisible="profisc_cis_type == '0'"/>
+                    <field name="profisc_start_date" string="Start Date"
+                           invisible="profisc_profile_id not in ('P2', 'P10')" required="profisc_profile_id == 'P2'"/>
+                    <field name="profisc_end_date" string="End Date"
+                           invisible="profisc_profile_id not in ('P2', 'P10')" required="profisc_profile_id == 'P2'"/>
+                </xpath>
+                <xpath expr="//div[@name='journal_div']" position="after">
+                    <field name="profisc_ubl_id" string="UBL ID"
+                           readonly="profisc_status_control == '3'" invisible="profisc_cis_type == '0'"/>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Fiskalizimi">
+                        <group colspan="2">
+                            <group>
+                                <field name="profisc_isEinvoice" string="is einvoice" invisible="1"/>
+                                <field name="profisc_iic" string="iic"/>
+                                <field name="profisc_fic" string="fic"/>
+                                <field name="profisc_eic" string="eic"/>
+                                <field name="profisc_qr_code" string="QR Code"/>
+                                <field widget="image" options="{'size': [0, 90]}" name="profisc_qr_code_check"
+                                       string="Qr Code" force_save="True" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="profisc_fisc_status_sale" string="Fisc Sale CODE"/>
+                                <field name="profisc_fisc_status" string="Fisc Status"
+                                       invisible="move_type  != 'in_invoice'"/>
+                                <field name="profisc_fisc_downloaded" string="Fiscal Downloaded"/>
+                                <field name="profisc_einvoice_downloaded" string="E-Invoice Downloaded"/>
+                                <field name="profisc_fic_error_code" string="FIC Error Code"/>
+                                <field name="profisc_fic_error_description" string="FIC Error Description"/>
+                                <field name="profisc_eic_error_code" string="EIC Error Code"/>
+                                <field name="profisc_eic_error_description" string="EIC Error Description"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+                    <page string="Attachments" name="studio_page_uh2O8">
+                        <group name="studio_group_uh2O8">
+                            <group name="studio_group_uh2O8_left"/>
+                            <group name="studio_group_uh2O8_right"/>
+                        </group>
+                        <field name="attachment_ids"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="profisc_account_move_extension_tree" model="ir.ui.view">
+            <field name="name">Profisc:: account_move_extension_tree</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_invoice_tree"/>
+            <field name="arch" type="xml">
+                <header>
+                    <button string="Recalculate Taxes"
+                            type="object"
+                            name="recalculateTaxes"
+                            class="btn-primary"/>
+                </header>
+                <list>
+                    <field name="profisc_ubl_id" optional="hide"/>
+                    <field name="amount_total_unsigned" sum="Total" optional="hide" on_change="1"/>
+                    <!--Sale Tax Fields-->
+                    <field name="profisc_sale_exampted_sales" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_0_on_supply" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_without_vat" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_export" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_taxable_value_20" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_vat20" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_taxable_value_10" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_vat10" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_taxable_value_6" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_vat6" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_reverse_charge" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_reverse_charge_vat" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_bad_debt" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_bad_debt_vat" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_vat0_margin_scheme" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_vat0_margin_scheme_tvsh" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <!--Purchase Tax Fields-->
+                    <field name="profisc_te_perjashtuara" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_investime" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_te_perjashtuara_te_investimit" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_import" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_import_20_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_import_20" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_import_10_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_import_10" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_import_6_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_import_6" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_importe_te_investimit_20_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_importe_te_investimit_20" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_nga_furnitore_vendas_20_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_nga_furnitore_vendas_20" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_nga_furnitore_vendas_10_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_nga_furnitore_vendas_10" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_nga_furnitore_vendas_6_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_nga_furnitore_vendas_6" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_te_investimit_nga_furnitore_vendas_20_takse" sum="Total" optional="hide"
+                           on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_te_investimit_nga_furnitore_vendas_20" sum="Total" optional="hide"
+                           on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_fermere_vendas_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_fermere_vendas" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_autongarkese_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_autongarkese" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_regullime_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_regullime" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_borxh_i_keq_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_borxh_i_keq" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                </list>
+            </field>
+        </record>
+    </data>
+</odoo>

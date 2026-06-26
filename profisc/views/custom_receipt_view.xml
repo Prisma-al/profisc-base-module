@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_pos_receipt_custom" model="ir.ui.view">
+            <field name="name">pos.receipt.custom</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.pos_order_receipt"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='receipt-footer']" position="inside">
+                    <div class="custom-line">
+                        This is a custom line in the footer!
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

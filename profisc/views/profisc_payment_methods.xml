@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="profisc_payment_methods" model="ir.ui.view">
+        <field name="name">profisc_payment_methods_form</field>
+        <field name="model">profisc.payment_methods</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="label"/>
+                        <field name="type"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="profisc_payment_methods_tree" model="ir.ui.view">
+        <field name="name">profisc_payment_methods.list</field>
+        <field name="model">profisc.payment_methods</field>
+        <field name="arch" type="xml">
+            <list string="Payment methods">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="label"/>
+                <field name="type"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_profisc_payment_methods" model="ir.actions.act_window">
+        <field name="name">Payment Methods Management</field>
+        <field name="res_model">profisc.payment_methods</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="profisc_payment_methods_tree"/>
+    </record>
+    <menuitem id="menu_profisc_payment_methods" name="Payment Methods Management" sequence="18"
+              action="action_profisc_payment_methods"
+              parent="menu_profisc_settings"/>
+</odoo>

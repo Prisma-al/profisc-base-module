@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+profisc.access_other_functions,access_other_functions,profisc.model_other_functions,base.group_user,1,1,1,1
+access_profisc_uom,profisc.uoms,profisc.model_profisc_uoms,account.group_account_invoice,1,1,1,1
+profisc.pos_order_wizard,profisc::pos_order_wizard,profisc.model_profisc_pos_order_wizard,base.group_user,1,1,1,1
+profisc.wtn_vehicles,profisc::wtn_vehicles,profisc.model_profisc_wtn_vehicles,base.group_user,1,1,1,1
+profisc.business_units,profisc::business_units,profisc.model_profisc_business_units,base.group_user,1,1,1,1
+profisc.tcr,profisc::tcr,profisc.model_profisc_tcr,base.group_user,1,1,1,1
+profisc.access_profisc_einvoice_profiles,access_profisc_einvoice_profiles,profisc.model_profisc_einvoice_profiles,base.group_user,1,1,1,1
+profisc.access_model_profisc_payment_methods,model_profisc_payment_methods,profisc.model_profisc_payment_methods,base.group_user,1,1,1,1
+

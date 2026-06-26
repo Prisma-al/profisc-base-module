@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="profisc_stock_location_extension" model="ir.ui.view">
+            <field name="name">Profisc:: stock_location_extension</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='replenish_location']" position="after">
+                    <field name="bu_id"/>
+                    <field name="tcr_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

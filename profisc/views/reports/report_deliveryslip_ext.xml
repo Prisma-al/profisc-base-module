@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Inherit the report template -->
+    <template id="profisc.report_delivery_document_inherit" inherit_id="stock.report_delivery_document">
+        <!-- Add or modify content -->
+        <!-- XPath is used to locate the element you want to target -->
+        <xpath expr="//table[@name='stock_move_table']" position="after">
+            <!-- Your modifications or additions go here -->
+            <t t-if="o.profisc_iic">
+                <strong>IIC:</strong>
+                <div t-field="o.profisc_iic"/>
+            </t>
+            <t t-if="o.profisc_fic">
+                <strong>FIC:</strong>
+                <div t-field="o.profisc_fic"/>
+            </t>
+        </xpath>
+
+    </template>
+</odoo>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="profisc.pos_order_tree" model="ir.ui.view">
+            <field name="name">profisc.pos_order_tree</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//list" position="inside">
+                    <header>
+                        <button name="action_show_update_profisc_subseq_wizard" string="Update Profisc Subseq"
+                                type="object"/>
+                    </header>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="profisc_erp_id" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_pos_order_search_inherit" model="ir.ui.view">
+            <field name="name">pos.order.search.view.inherit</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_order_search"/>
+            <field name="arch" type="xml">
+                <field name="config_id" position="after">
+                    <field name="profisc_erp_id"/>
+                </field>
+            </field>
+        </record>
+
+
+        <record id="view_update_profisc_subseq_wizard" model="ir.ui.view">
+            <field name="name">Profisc:: profisc.pos_order_wizard</field>
+            <field name="model">profisc.pos_order_wizard</field>
+            <field name="arch" type="xml">
+                <form string="Select Parameters">
+                    <group>
+                        <field name="invoice_subseq" string="Subseq Type"/>
+                    </group>
+                    <field name="result"/>
+                    <footer>
+                        <button name="action_confirm" string="Dergo" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="action_show_update_profisc_subseq_wizard" model="ir.actions.act_window">
+            <field name="name">Resend invocies</field>
+            <field name="res_model">profisc.pos_order_wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_update_profisc_subseq_wizard"/>
+            <field name="target">new</field>
+        </record>
+        <record id="view_pos_order_filter_inherited" model="ir.ui.view">
+            <field name="name">pos.order.search.inherited</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_order_filter"/>
+            <field name="arch" type="xml">
+                <search position="inside">
+                    <filter name="profisc_invoices_resend" string="Profisc:: Invoices to resend"
+                            domain="[('profisc_fic_error_code', 'in', ['T070','T991'])]"/>
+                    <filter name="profisc_invoices_error" string="Profisc:: Invoices with error"
+                            domain="[('profisc_fic_error_code', '!=', False), ('profisc_fic_error_code', 'not in', ['100','T070','T991'])]"/>
+                    <filter name="profisc_invoices_success" string="Profisc:: Invoices with sucess"
+                            domain="[('profisc_fic_error_code', '=', '100')]"/>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

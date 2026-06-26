@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+        <record id="res_partner_extension" model="ir.ui.view">
+            <field name="name">Profisc:: res_partner_extension</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vat']" position="before">
+                    <field name="profisc_customer_vat_type" string="Customer Vat Type"/>
+                </xpath>
+                <xpath expr="//field[@name='vat']" position="after">
+                    <button type="object" class="btn btn-secondary btn-sm"
+                            name="update_tax_payer"
+                            icon="fa-search"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

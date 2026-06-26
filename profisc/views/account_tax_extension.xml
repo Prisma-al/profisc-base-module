@@ -1,0 +1,45 @@
+<odoo>
+    <data>
+        <record id="account_tax_extension" model="ir.ui.view">
+            <field name="name">Profisc:: account_tax_extension</field>
+            <field name="model">account.tax</field>
+            <field name="inherit_id" ref="account.view_tax_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='active']" position="after">
+                    <field name="profisc_vat_exempt"/>
+                    <field name="profisc_vat_schema"/>
+                    <field name="profisc_tax_exempt_reason" string="Tax exempt reason" widget="selection"
+                           invisible="amount > 0"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!--        Tax list View-->
+        <record id="account_tax_extension_tree" model="ir.ui.view">
+            <field name="name">Profisc:: account_tax_extension_tree</field>
+            <field name="model">account.tax</field>
+            <field name="inherit_id" ref="account.view_tax_tree"/>
+            <field name="arch" type="xml">
+               <list>
+<!--                   <field name="included_on_books" readonly="False"/>-->
+               </list>
+            </field>
+        </record>
+
+        <record id="account_tax_extension_form" model="ir.ui.view">
+            <field name="name">Profisc:: account_tax_extension_form</field>
+            <field name="model">account.tax</field>
+            <field name="inherit_id" ref="account.view_tax_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Label on Books" name="label_on_books">
+                        <group>
+                            <field name="sale_book_label" string="Sale Book Tax Label" invisible="type_tax_use in ('purchase')"/>
+                            <field name="purchase_book_label" string="Purchase Book Tax Label" invisible="type_tax_use in ('sale')"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

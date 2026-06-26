@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record model="account.payment.term" id="cash_banknote">
+            <field name="name">Cash BANKNOTE Profisc</field>
+            <field name="note">Payment terms: Immediate Payment</field>
+            <field name="profisc_payment_code">10</field>
+            <field name="profisc_payment_code_description">BANKNOTE</field>
+        </record>
+
+        <record model="account.payment.term" id="cash_bank_card">
+            <field name="name">Cash BANK Card Profisc</field>
+            <field name="note">Payment terms: Immediate Payment</field>
+            <field name="profisc_payment_code">48</field>
+            <field name="profisc_payment_code_description">BANK Card</field>
+        </record>
+
+        <record model="account.payment.term" id="cash_direct_debit">
+            <field name="name">Cash Direct Debit Profisc</field>
+            <field name="note">Payment terms: Immediate Payment</field>
+            <field name="profisc_payment_code">49</field>
+            <field name="profisc_payment_code_description">DIRECT DEBIT</field>
+        </record>
+
+        <record model="account.payment.term" id="noncash_transfer">
+            <field name="name">30 Days NONCASH Transfer Profisc</field>
+            <field name="note">Payment terms: 30 Days</field>
+            <field name="profisc_payment_code">31</field>
+            <field name="profisc_payment_code_description">TRANSFER</field>
+        </record>
+
+        <record model="account.payment.term" id="noncash_account">
+            <field name="name">30 Days NONCASH Account Profisc</field>
+            <field name="note">Payment terms: 30 Days</field>
+            <field name="profisc_payment_code">42</field>
+            <field name="profisc_payment_code_description">ACCOUNT</field>
+        </record>
+
+        <record model="account.payment.term" id="noncash_credit_transfer">
+            <field name="name">30 Days NONCASH Credit Transfer Profisc</field>
+            <field name="note">Payment terms: 30 Days</field>
+            <field name="profisc_payment_code">30</field>
+            <field name="profisc_payment_code_description">CREDIT TRANSFER</field>
+        </record>
+
+        <record model="account.payment.term" id="noncash_other">
+            <field name="name">30 Days NONCASH Other Profisc</field>
+            <field name="note">Payment terms: 30 Days</field>
+            <field name="profisc_payment_code">ZZZ</field>
+            <field name="profisc_payment_code_description">OTHER</field>
+        </record>
+
+    </data>
+</odoo>

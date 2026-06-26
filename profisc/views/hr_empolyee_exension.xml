@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="hr_empolyee_exension" model="ir.ui.view">
+            <field name="name">Profisc:: hr_empolyee_exension</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='work_email']" position="after">
+                    <field name="profisc_operator_code" string="Operator Code"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

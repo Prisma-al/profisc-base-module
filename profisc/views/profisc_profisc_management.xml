@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="profisc_wtn_vehicles" model="ir.ui.view">
+        <field name="name">profisc.wtn_vehicles.form</field>
+        <field name="model">profisc.wtn_vehicles</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="plate"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="profisc_business_units_tree" model="ir.ui.view">
+        <field name="name">profisc.profisc_wtn_business_units.list</field>
+        <field name="model">profisc.business_units</field>
+        <field name="arch" type="xml">
+            <list string="Business Unit">
+                <header>
+                     <button string="Get BU"
+                             type="object"
+                             name="get_buCodes_from_profisc"
+                             class="btn-primary"
+                     />
+                </header>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="address"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="profisc_wtn_business_units" model="ir.ui.view">
+        <field name="name">profisc.profisc_wtn_business_units.form</field>
+        <field name="model">profisc.business_units</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="company_id"/>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="address"/>
+                        <field name="status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- list View -->
+    <record id="view_profisc_tcr_tree" model="ir.ui.view">
+        <field name="name">profisc.tcr.list</field>
+        <field name="model">profisc.tcr</field>
+        <field name="arch" type="xml">
+            <list>
+                <header>
+                     <button string="Fetch TCRs"
+                        type="object"
+                        name="get_tcr_from_profisc"
+                        class="btn-primary"/>
+                </header>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="bu_id" string="Business Unit"/>
+                <field name="company_id"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_profisc_tcr_form" model="ir.ui.view">
+        <field name="name">profisc.tcr.form</field>
+        <field name="model">profisc.tcr</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="company_id"/>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="bu_id"/>
+                        <field name="status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_profisc_wtn_vehicles" model="ir.actions.act_window">
+        <field name="name">Vehicles</field>
+        <field name="res_model">profisc.wtn_vehicles</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_profisc_wtn_business_units" model="ir.actions.act_window">
+        <field name="name">Business Units</field>
+        <field name="res_model">profisc.business_units</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+<!--    &lt;!&ndash; Add Button to Action Toolbar &ndash;&gt;-->
+<!--    <record id="action_profisc_tcr_with_button" model="ir.actions.server">-->
+<!--        <field name="name">Fetch TCRs</field>-->
+<!--        <field name="model_id" ref="model_profisc_tcr"/>-->
+<!--        <field name="binding_model_id" ref="model_profisc_tcr"/>-->
+<!--        <field name="state">code</field>-->
+<!--        <field name="code">env['profisc.tcr'].get_tcr_from_profisc()</field>-->
+<!--    </record>-->
+
+    <!-- Add the button in the list view header -->
+    <record id="action_profisc_tcr" model="ir.actions.act_window">
+        <field name="name">TCRs</field>
+        <field name="res_model">profisc.tcr</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_profisc_management" name="Profisc" sequence="10"
+              web_icon="profisc,static/description/icon.png"/>
+
+    <menuitem id="menu_profisc_settings" name="Settings" sequence="11" parent="menu_profisc_management"/>
+
+    <menuitem id="menu_profisc_wtn_vehicles" name="Vehicle Management" sequence="13"
+              action="action_profisc_wtn_vehicles"
+              parent="menu_profisc_settings"/>
+
+    <menuitem id="menu_profisc_uoms" name="Uoms Management" sequence="14"
+              action="action_profisc_uoms"
+              parent="menu_profisc_settings"/>
+
+    <menuitem id="menu_profisc_wtn_business_units" name="BU Management" sequence="15"
+              action="action_profisc_wtn_business_units"
+              parent="menu_profisc_settings"/>
+
+    <menuitem id="menu_profisc_wtn_tcr" name="TCR Management" sequence="16"
+              action="action_profisc_tcr"
+              parent="menu_profisc_settings"/>
+
+</odoo>

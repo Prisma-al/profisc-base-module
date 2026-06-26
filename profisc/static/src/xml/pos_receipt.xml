@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <!-- Extend OrderReceipt: add fiscal fields after footer -->
+    <t t-name="pos_receipt_header_inherit"
+       t-inherit="point_of_sale.OrderReceipt"
+       t-inherit-mode="extension">
+
+        <xpath expr="//img[@id='posqrcode']/ancestor::div[hasclass('gap-2')][1]" position="replace"/>
+
+        <xpath expr="//div[@class='after-footer']" position="inside">
+            <t t-if="order.profisc_iic">
+                <div style="text-align:center;" class="profisc_fields" >
+                    <div>------------------------</div>
+                    <t t-if="order.profisc_ubl_id">
+                        <div>
+                            Numri i fatures:
+                            <t t-esc="order.profisc_ubl_id"/>
+                        </div>
+                    </t>
+                    <div>
+                        NSLF:
+                        <t t-esc="order.profisc_iic"/>
+                    </div>
+                    <t t-if="order.profisc_fic">
+                        <div>
+                            NIVF:
+                            <t t-esc="order.profisc_fic"/>
+                        </div>
+                    </t>
+                    <t t-if="order.profisc_eic">
+                        <div>
+                            Eic:
+                            <t t-esc="order.profisc_eic"/>
+                        </div>
+                    </t>
+                    <t t-if="order.profisc_qr_code">
+                        <div id="qrcode">
+                            <img style="width:200px;height:200px"
+                                 class="profisc_qr_code"
+                                 t-att-src="order.profisc_qr_code"
+                                 alt="qr_code"/>
+                        </div>
+                    </t>
+                    <div>
+                         Gjeneruar nga: ProFisc by Prisma
+                    </div>
+                </div>
+            </t>
+            <!-- Customer info -->
+            <t t-if="order.partner_id">
+                <div style="text-align:center;">
+                    <div>--------------------------------</div>
+                    <div>Customer</div>
+                    <div>Name:<t t-esc="order.partner_id.name"/></div>
+                    <div t-if="order.partner_id.vat">Vat:<t t-esc="order.partner_id.vat"/></div>
+                    <div t-if="order.partner_id.street">Address:<t t-esc="order.partner_id.street"/></div>
+                </div>
+            </t>
+        </xpath>
+    </t>
+
+    <!-- Extend ReceiptHeader: replace company contact but keep the class -->
+    <t t-name="profisc.ReceiptHeader"
+       t-inherit="point_of_sale.ReceiptHeader"
+       t-inherit-mode="extension">
+
+        <xpath expr="//div[hasclass('pos-receipt-contact')]" position="replace">
+            <div class="pos-receipt-contact">
+                <div>--------------------------------</div>
+                <t t-if="order.company.name">
+                    <div>
+                        <t t-esc="order.company.name"/>
+                    </div>
+                </t>
+                <t t-if="order.company.vat">
+                    <div>NUIS:
+                        <t t-esc="order.company.vat"/>
+                    </div>
+                </t>
+                <t t-if="order.company.street or order.company.city">
+                    <div>Adresa:
+                        <t t-esc="order.company.street"/> <t t-esc="order.company.city"/>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+    </t>
+
+</templates>

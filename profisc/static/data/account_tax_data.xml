@@ -1,0 +1,75 @@
+<odoo noupdate="1">
+<!--    <record id="tvsh_shitje_20_pc" model="account.tax">-->
+<!--        <field name="name">TVSH Shitje 20%</field>-->
+<!--        <field name="tax_group_id">1</field>-->
+<!--        <field name="type_tax_use">sale</field>-->
+<!--        <field name="amount">20</field>-->
+<!--        <field name="country_id">6</field>-->
+<!--    </record>-->
+<!--    <record model="account.tax" id="tvsh_blerje_20_pc">-->
+<!--            <field name="name">TVSH Blerje 20%</field>-->
+<!--            <field name="type_tax_use">purchase</field>-->
+<!--            <field name="amount">20</field>-->
+<!--            <field name="country_id">6</field>-->
+<!--        </record>-->
+<!--        <record model="account.tax" id="tvsh_blerje_10_pc">-->
+<!--            <field name="name">TVSH Blerje 10%</field>-->
+<!--            <field name="type_tax_use">purchase</field>-->
+<!--            <field name="amount">10</field>-->
+<!--            <field name="country_id">6</field>-->
+<!--        </record>-->
+<!--        <record model="account.tax" id="tvsh_blerje_6_pc">-->
+<!--            <field name="name">TVSH Blerje 6%</field>-->
+<!--            <field name="type_tax_use">purchase</field>-->
+<!--            <field name="amount">6</field>-->
+<!--            <field name="country_id">6</field>-->
+<!--        </record>-->
+<!--        <record model="account.tax" id="tvsh_blerje_0_pc">-->
+<!--            <field name="name">TVSH Blerje 0%</field>-->
+<!--            <field name="type_tax_use">purchase</field>-->
+<!--            <field name="amount">0</field>-->
+<!--            <field name="country_id">6</field>-->
+<!--        </record>-->
+<!--        <record model="account.tax" id="tvsh_blerje_0_tax_free">-->
+<!--            <field name="name">TVSH Blerje 0% Tax Free</field>-->
+<!--            <field name="type_tax_use">purchase</field>-->
+<!--            <field name="profisc_tax_exempt_reason">TAX_FREE</field>-->
+<!--            <field name="amount">0</field>-->
+<!--            <field name="country_id">6</field>-->
+<!--        </record>-->
+<!--    <record model="account.tax" id="tvsh_shitje_0_export_of_goods">-->
+<!--        <field name="name">TVSH Shitje 0% Export of Goods</field>-->
+<!--        <field name="type_tax_use">sale</field>-->
+<!--        <field name="profisc_tax_exempt_reason">EXPORT_OF_GOODS</field>-->
+<!--        <field name="amount">0</field>-->
+<!--        <field name="country_id">6</field>-->
+<!--    </record>-->
+<!--    <record model="account.tax" id="tvsh_shitje_0_tax_free">-->
+<!--        <field name="name">TVSH Shitje 0% Tax Free</field>-->
+<!--        <field name="type_tax_use">sale</field>-->
+<!--        <field name="profisc_tax_exempt_reason">TAX_FREE</field>-->
+<!--        <field name="amount">0</field>-->
+<!--        <field name="country_id">6</field>-->
+<!--    </record>-->
+<!--    <record model="account.tax" id="tvsh_shitje_0_type_1">-->
+<!--        <field name="name">TVSH Shitje 0% Type 1</field>-->
+<!--        <field name="type_tax_use">sale</field>-->
+<!--        <field name="profisc_tax_exempt_reason">TYPE_1</field>-->
+<!--        <field name="amount">0</field>-->
+<!--        <field name="country_id">6</field>-->
+<!--    </record>-->
+<!--    <record model="account.tax" id="tvsh_shitje_0_type_2">-->
+<!--        <field name="name">TVSH Shitje 0% Type 2</field>-->
+<!--        <field name="type_tax_use">sale</field>-->
+<!--        <field name="profisc_tax_exempt_reason">TYPE_2</field>-->
+<!--        <field name="amount">0</field>-->
+<!--        <field name="country_id">6</field>-->
+<!--    </record>-->
+<!--    <record model="account.tax" id="tvsh_shitje_0_margin_scheme">-->
+<!--        <field name="name">TVSH Shitje 0% Margin Scheme</field>-->
+<!--        <field name="type_tax_use">sale</field>-->
+<!--        <field name="profisc_tax_exempt_reason">MARGIN_SCHEME</field>-->
+<!--        <field name="amount">0</field>-->
+<!--        <field name="country_id">6</field>-->
+<!--    </record>-->
+</odoo>

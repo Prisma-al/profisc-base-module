@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="profisc_stock_picking_extension" model="ir.ui.view">
+            <field name="name">Profisc:: stock_picking_extension</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='location_dest_id'][2]" position="after">
+                    <field name="is_internal" invisible="1"/>
+                    <field name="profisc_wtn_type" string="Wtn Type"
+                           invisible="picking_type_code != 'internal'"/>
+                    <field name="profisc_bu_code" invisible="not is_internal"/>
+                    <field name="profisc_invoice_id" string="Invoice Id"
+                           invisible="not is_internal"/>
+                    <field name="profisc_transaction_type" string="Transaction Type"
+                           invisible="not is_internal"/>
+                    <field name="profisc_vehicle_ownership" string="Veh Ownership"
+                           invisible="not is_internal"/>
+                    <field name="profisc_vehicle_plate" string="Vehicle"
+                           invisible="not is_internal"/>
+                    <field name="profisc_is_goods_flammable" invisible="not is_internal"/>
+                    <field name="profisc_is_escort_required" invisible="not is_internal"/>
+                    <field name="profisc_total" readonly="1" invisible="not is_internal"/>
+                    <field name="profisc_items_num" readonly="1" invisible="not is_internal"/>
+                    <field name="profisc_subseq" string="Subseq" invisible="not is_internal"/>
+                </xpath>
+                <xpath expr="//field[@name='origin']" position="before">
+                    <field name="profisc_destin_date" string="Destin Date"
+                           invisible="not is_internal"/>
+                </xpath>
+                <xpath expr="//sheet/group" position="after">
+                    <div invisible="not is_internal">
+                        <button name="send_to_profisc" type="object" class="btn btn-odoo"
+                                invisible="state != 'done' or profisc_status_control == '3' or profisc_wtn_type == 'n_a'"
+                        >
+                            <i class="fa fa-bolt" style="color:white"/>
+                            Fiskalizo
+                        </button>
+                        <button name="get_pdf" type="object" class="btn btn-odoo"
+                                invisible="profisc_status_control != '3' or profisc_fisc_downloaded"
+                        >
+                            <i class="fa fa-file-pdf-o" style="color:red"/>
+                            Get PDF
+                        </button>
+                    </div>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Fiskalizimi" invisible="not is_internal">
+                        <group colspan="2">
+                            <group>
+                                <field name="profisc_status_control" invisible="1"/>
+                                <field name="profisc_fisc_downloaded" invisible="1"/>
+                                <field name="profisc_ubl_id" string="Wtn Num"/>
+                                <field name="profisc_iic" string="iic"/>
+                                <field name="profisc_fic" string="fic"/>
+                                <field name="profisc_qr_code" widget='url'/>
+                            </group>
+                            <group>
+                                <field name="profisc_fic_error_code" string="Error Code"/>
+                                <field name="profisc_fic_error_description" string="Error Description"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Attachments" name="studio_page_uh2O8">
+                        <field name="attachment_ids"/>
+                    </page>
+                </xpath>
+                <form>
+                    <div class="o_attachment_preview"/>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

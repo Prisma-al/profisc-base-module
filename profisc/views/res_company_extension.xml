@@ -1,0 +1,41 @@
+<odoo>
+    <data>
+        <record id="res_company_extension" model="ir.ui.view">
+            <field name="name">Profisc:: res_company_extension</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Profisc Configuration">
+                        <group colspan="2">
+                            <group>
+                                <field name="profisc_company_id" string="Profisc company id"/>
+                                <field name="profisc_api_endpoint" string="Profisc api endpoint" widget="selection"/>
+                                <field name="profisc_login_endpoint" string="Profisc login endpoint"/>
+                                <field name="profisc_username" string="Profisc username"/>
+                                <field name="profisc_password" string="Profisc password" password="True"/>
+                                <field name="profisc_search_endpoint" string="Profisc search endpoint"/>
+                                <field name="profisc_upload_invoice" string="Profisc upload invoice"/>
+                                <field name="profisc_upload_wtn_invoice" string="Profisc upload wtn invoice"/>
+                                <field name="profisc_cash_deposit" string="Profisc Register Cash Deposit"/>
+                                <field name="profisc_login_token" string="Profisc login token" widget="textarea" />
+                                <button name="get_current_company" type="object">
+                                    <i class="fa fa-check" style="color:green"/>Check
+                                </button>
+                            </group>
+                            <group>
+                                <field name="profisc_purch_inv_check_time_s" string="Check for new Invoices time(s)"/>
+                                <field name="profisc_auto_subseq" string="Profisc auto subseq"/>
+                                <field name="profisc_manual_fisc_select" string="Manual fisc select"/>
+                                <field name="profisc_auto_search_nuis" string="Auto Search NUIS" />
+                                <field name="is_in_vat"/>
+<!--                                <field name="profisc_invoiceStatus" string="Status Change Api"/>-->
+<!--                                <field name="profisc_checkStatus" string="Status Check Api"/>-->
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

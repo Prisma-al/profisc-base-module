@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record model="profisc.payment_methods" id="ppmt_cash_banknote">
+            <field name="label">Cash BANKNOTE</field>
+            <field name="type">1</field>
+            <field name="code">10</field>
+            <field name="name">BANKNOTE</field>
+        </record>
+
+        <record model="profisc.payment_methods" id="ppmt_cash_bank_card">
+            <field name="label">Cash BANK Card</field>
+            <field name="type">1</field>
+            <field name="code">48</field>
+            <field name="name">CARD</field>
+        </record>
+
+        <record model="profisc.payment_methods" id="ppmt_cash_check">
+            <field name="label">Cash CHECK</field>
+            <field name="type">1</field>
+            <field name="code">10</field>
+            <field name="name">CHECK</field>
+        </record>
+        <record model="profisc.payment_methods" id="ppmt_cash_svoucher">
+            <field name="label">Cash SVOUCHER</field>
+            <field name="type">1</field>
+            <field name="code">10</field>
+            <field name="name">SVOUCHER</field>
+        </record>
+
+        <record model="profisc.payment_methods" id="ppmt_cash_company">
+            <field name="label">Cash COMPANY</field>
+            <field name="type">1</field>
+            <field name="code">10</field>
+            <field name="name">COMPANY</field>
+        </record>
+        <record model="profisc.payment_methods" id="ppmt_cash_order">
+            <field name="label">Cash ORDER</field>
+            <field name="type">1</field>
+            <field name="code">10</field>
+            <field name="name">ORDER</field>
+        </record>
+
+        <record model="profisc.payment_methods" id="ppmt_noncash_30_days_transfer">
+            <field name="label">30 Days NONCASH Transfer</field>
+            <field name="type">2</field>
+            <field name="code">31</field>
+            <field name="name">TRANSFER</field>
+        </record>
+
+        <record model="profisc.payment_methods" id="ppmt_noncash_30_days_account">
+            <field name="label">30 Days NONCASH Account</field>
+            <field name="type">2</field>
+            <field name="code">42</field>
+            <field name="name">ACCOUNT</field>
+        </record>
+
+        <record model="profisc.payment_methods" id="ppmt_noncash_30_days_credit_transfer">
+            <field name="label">30 Days NONCASH Credit Transfer</field>
+            <field name="type">2</field>
+            <field name="code">30</field>
+            <field name="name">CREDIT TRANSFER</field>
+        </record>
+
+        <record model="profisc.payment_methods" id="ppmt_noncash_30_days_other">
+            <field name="label">30 Days NONCASH Other</field>
+            <field name="type">2</field>
+            <field name="code">ZZZ</field>
+            <field name="name">OTHER</field>
+        </record>
+
+
+    </data>
+</odoo>

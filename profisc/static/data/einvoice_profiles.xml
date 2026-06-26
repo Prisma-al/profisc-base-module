@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record model="profisc.einvoice_profiles" id="profile_p1">
+            <field name="name">P1 - Invoicing the supply of goods and services ordered on a contract basis</field>
+            <field name="code">P1</field>
+        </record>
+        <record model="profisc.einvoice_profiles" id="profile_p2">
+            <field name="name">P2 - Periodic invoicing of contract-based delivery</field>
+            <field name="code">P2</field>
+        </record>
+        <record model="profisc.einvoice_profiles" id="profile_p3">
+            <field name="name">P3 - Invoicing delivery over unforeseen order</field>
+            <field name="code">P3</field>
+        </record>
+        <record model="profisc.einvoice_profiles" id="profile_p4">
+            <field name="name">P4 - Advance Payment</field>
+            <field name="code">P4</field>
+        </record>
+        <record model="profisc.einvoice_profiles" id="profile_p5">
+            <field name="name">P5 - Spot payment</field>
+            <field name="code">P5</field>
+        </record>
+        <record model="profisc.einvoice_profiles" id="profile_p6">
+            <field name="name">P6 - Payment before delivery on the based on a purchase order</field>
+            <field name="code">P6</field>
+        </record>
+        <record model="profisc.einvoice_profiles" id="profile_p7">
+            <field name="name">P7 - Invoices with reference to a dispatch note</field>
+            <field name="code">P7</field>
+        </record>
+        <record model="profisc.einvoice_profiles" id="profile_p8">
+            <field name="name">P8 - Invoices with reference to dispatch and receipt</field>
+            <field name="code">P8</field>
+        </record>
+        <record model="profisc.einvoice_profiles" id="profile_p9">
+            <field name="name">P9 - Approval or Negative Invoicing</field>
+            <field name="code">P9</field>
+        </record>
+        <record model="profisc.einvoice_profiles" id="profile_p10">
+            <field name="name">P10 - Corrective Invoice</field>
+            <field name="code">P10</field>
+        </record>
+        <record model="profisc.einvoice_profiles" id="profile_p11">
+            <field name="name">P11 - Partial and final invoicing</field>
+            <field name="code">P11</field>
+        </record>
+        <record model="profisc.einvoice_profiles" id="profile_p12">
+            <field name="name">P12 - Self Invoice</field>
+            <field name="code">P12</field>
+        </record>
+    </data>
+</odoo>

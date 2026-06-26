@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="account_move_extension" model="ir.ui.view">
+            <field name="name">Profisc:: point_of_sale_orders_ext</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+                    <page string="Fiskalizimi" name="studio_page_nAmGS">
+                        <group name="studio_group_nAmGS">
+                            <group name="studio_group_nAmGS_left">
+                                <field name="profisc_erp_id" String="Erp id" readonly="1"/>
+                                <field name="profisc_iic" String="iic" readonly="1"/>
+                                <field name="profisc_fic" String="fic" readonly="1"/>
+                                <field name="profisc_eic" String="eic" readonly="1"/>
+
+                            </group>
+                            <group name="studio_group_nAmGS_right">
+                                <field name="profisc_fic_error_code" String="Fisk Error Code" readonly="1"/>
+                                <field name="profisc_fic_error_description" String="Fisk Error Desc" readonly="1"/>
+                                <field name="profisc_eic_error_code" String="Einv Error Code" readonly="1"/>
+                                <field name="profisc_eic_error_description" String="Einv Error Desc" readonly="1"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

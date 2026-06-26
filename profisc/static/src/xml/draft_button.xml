@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-inherit="point_of_sale.PaymentScreen" t-inherit-mode="extension">
+        <xpath expr="//div[contains(@class, 'left-content')]" position="inside">
+            <div class="button-row" style="display: flex; width: 100%; gap: 10px;">
+                <!-- Draft Button -->
+<!--                <div class="button highlight"-->
+<!--                     t-on-click="draftOrder"-->
+<!--                     style="flex: 1; background-color: #875A7B !important; color: white; display: flex; align-items: center; justify-content: center; padding: 20px 0; font-size: 18px;">-->
+<!--                    <div class="pay-circle" style="margin-right: 10px;">-->
+<!--                        <i class="fa fa-chevron-right" role="img" aria-label="Draft" title="Draft" />-->
+<!--                    </div>-->
+<!--                    <span class="next_text">Draft</span>-->
+<!--                </div>-->
+            </div>
+        </xpath>
+    </t>
+</templates>

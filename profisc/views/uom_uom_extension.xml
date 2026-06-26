@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="uom_uom_extension" model="ir.ui.view">
+            <field name="name">Profisc:: uom_uom_extension</field>
+            <field name="model">uom.uom</field>
+            <field name="inherit_id" ref="uom.product_uom_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='uom_details']/field[@name='name']" position="after">
+                    <field name="profisc_uom_val"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
