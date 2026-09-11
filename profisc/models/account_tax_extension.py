@@ -48,3 +48,6 @@ class AccountTaxExtension(models.Model):
          ('Autongarkesë TVSH në blerje me të drejtë kreditimi', 'Autongarkesë TVSH në blerje me të drejtë kreditimi'),
          ('Rregullime të TVSH-së së zbritshme', 'Rregullime të TVSH-së së zbritshme'),
          ('Veprime të borxhit të keq', 'Veprime të borxhit të keq')],string='Purchase Book Label', store=True)
+
+    # fusha re qe do shkoje ne profisc
+    is_investment = fields.Boolean(string="Is Investment", help="Check per te dalluar nese eshte investim")

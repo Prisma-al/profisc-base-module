@@ -171,6 +171,10 @@ class profisc_actions(models.Model):
             'bankAccounts': []
         }
 
+        # shtimi i due date si fushe ne request nese eshte e plotesuar si fushe
+        if record.invoice_date_due:
+            invoice_json['dueDate'] = str(record.invoice_date_due.strftime("%d/%m/%Y ") + current_time)
+
         if(record.partner_bank_id):
             bank_json = {
                 'iban': record.partner_bank_id.acc_number,
@@ -217,6 +221,22 @@ class profisc_actions(models.Model):
         if self.env.user.profisc_operator_code:
             invoice_json['operatorCode'] = self.env.user.profisc_operator_code
 
+        if record.profisc_reference_invoice_iic:
+            invoice_json['refIic'] = str(record.profisc_reference_invoice_iic)  # new corrective
+            account_move_ref = self.env["account.move"].search([
+                ('profisc_iic', '=', record.profisc_reference_invoice_iic),
+                ('profisc_profile_id', '=', 'P12')
+            ], limit=1)
+            if account_move_ref:
+                if record.profisc_profile_id == "P10":
+                    invoice_json['customer'], invoice_json['seller'] = invoice_json['seller'], invoice_json['customer']
+                    invoice_json['selfInvoiceType'] = account_move_ref.profisc_self_invoice_type
+                    invoice_json['isReverseCharge'] = record.profisc_reverse_charge
+                    invoice_json["invoiceType"] = "credit"
+                    invoice_json['correctionOfSelfInvoice'] = record.is_p10_check
+                else:
+                    _logger.info("Hyri ne ELSE:: nuk eshte p10")
+
         for line in record.invoice_line_ids:
             tax = line.tax_ids
             price_include = tax.price_include
@@ -241,6 +261,7 @@ class profisc_actions(models.Model):
                 "discount":  item_price * line.quantity * (line.discount / 100.0) * coef,
                 "vat": tax.amount,
                 "vatScheme": tax.profisc_vat_schema,
+                "Investment": tax.is_investment,
                 "totalLineNeto": coef * total_line_neto,
                 "totalLineVat": coef * total_line_vat
             }

@@ -92,6 +92,7 @@
                 <xpath expr="//div[@name='journal_div']" position="after">
                     <field name="profisc_ubl_id" string="UBL ID"
                            readonly="profisc_status_control == '3'" invisible="profisc_cis_type == '0'"/>
+                    <field name="profisc_due_date"/>
                 </xpath>
                 <xpath expr="//notebook" position="inside">
                     <page string="Fiskalizimi">

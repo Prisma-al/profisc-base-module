@@ -228,6 +228,41 @@ class AccountMoveExtension(models.Model):
     # def is_sale_invoice(self):
     #     return self.type == 'out_invoice'
 
+    # fusha per te ndryshu due date
+    profisc_due_date = fields.Date(string="Due Date", help="This is a date used to change the invoice due date when needed")
+
+    # fusha me dergu ne profisc per p12 - p10 relation
+    is_p10_check = fields.Boolean(string="Is P10", default=False,
+                                  help="Bool field to determine wether the p12 is actually a corrective inv (P10)", compute="compute_is_p10_check")
+
+    #funksioni me e lon isp10 true ose false nebaze te kushtit
+    def compute_is_p10_check(self):
+        for rec in self:
+            if rec.profisc_profile_id == "P10" and rec.profisc_reference_invoice_iic:
+                rec.is_p10_check = True
+            else:
+                rec.is_p10_check = False
+
+    #funksioni per me e nddryshu due date
+    def action_post(self):
+        # thrrasim dhe metoden aktuale pa humb asnji funksionalitet
+        res = super().action_post()
+        for move in self:
+            if move.profisc_due_date:
+                move.invoice_date_due = move.profisc_due_date
+        return res
+
+
+    # def is_sale_invoice(self):
+    #     return self.type == 'out_invoice'
+
+    # ndryshimi by default per inv type
+    @api.onchange('profisc_profile_id')
+    def check_profile_id(self):
+        for move in self:
+            if move.profisc_profile_id == "P12":
+                move.profisc_invoice_type = "389"
+
     def _get_business_units(self):
         bus = self.env['profisc.business_units'].search([('company_id', '=', self.env.company.id), ('status', '=', True)])
         return [(bu.code, bu.code) for bu in bus]
