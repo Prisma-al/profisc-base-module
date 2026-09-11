@@ -71,7 +71,7 @@
                         e-Invoice PDF
                     </button>
                     <!--<button name="get_qr_code" type="object" groups="account.group_account_invoice"
-                            invisible="state != 'posted' or profisc_fisc_status == 'Y'">
+                            attrs="{'invisible':['|', ('state', '!=', 'posted'),('profisc_fisc_status', 'in', ('Y'))]}">
                         <i class="fa fa-qrcode" style="color:blue"/>
                         QR Code
                     </button>-->
@@ -92,6 +92,7 @@
                 <xpath expr="//div[@name='journal_div']" position="after">
                     <field name="profisc_ubl_id" string="UBL ID"
                            readonly="profisc_status_control == '3'" invisible="profisc_cis_type == '0'"/>
+                    <field name="profisc_due_date"/>
                 </xpath>
                 <xpath expr="//notebook" position="inside">
                     <page string="Fiskalizimi">
