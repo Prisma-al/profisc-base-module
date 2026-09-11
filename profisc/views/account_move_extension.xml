@@ -6,6 +6,13 @@
             <field name="model">account.move</field>
             <field name="inherit_id" ref="account.view_move_form"/>
             <field name="arch" type="xml">
+                <header>
+                    <button string="Get Profisc Data"
+                            type="object"
+                            name="get_data_from_profisc"
+                            class="btn-primary"
+                            groups="account.group_account_invoice"/>
+                </header>
                 <xpath expr="//button[@name='button_draft']"
                        position="replace">
                     <button name="button_draft" string="Reset to Draft" type="object"
@@ -26,7 +33,7 @@
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <group>
                         <field name="profisc_cis_type" widget="selection"
-                           readonly="profisc_status_control == '3'" string="CIS Type"/>
+                               readonly="profisc_status_control == '3'" string="CIS Type"/>
                         <field name="profisc_status_control" widget="selection"
                                invisible="profisc_cis_type not in ['-1','1']" required="profisc_cis_type != '0'"
                                string="Status Control"/>
@@ -147,54 +154,97 @@
                     <field name="profisc_ubl_id" optional="hide"/>
                     <field name="amount_total_unsigned" sum="Total" optional="hide" on_change="1"/>
                     <!--Sale Tax Fields-->
-                    <field name="profisc_sale_exampted_sales" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
-                    <field name="profisc_sale_0_on_supply" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
-                    <field name="profisc_sale_without_vat" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
-                    <field name="profisc_sale_export" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
-                    <field name="profisc_sale_taxable_value_20" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
-                    <field name="profisc_sale_vat20" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
-                    <field name="profisc_sale_taxable_value_10" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
-                    <field name="profisc_sale_vat10" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
-                    <field name="profisc_sale_taxable_value_6" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
-                    <field name="profisc_sale_vat6" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
-                    <field name="profisc_sale_reverse_charge" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
-                    <field name="profisc_sale_reverse_charge_vat" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
-                    <field name="profisc_sale_bad_debt" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
-                    <field name="profisc_sale_bad_debt_vat" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
-                    <field name="profisc_sale_vat0_margin_scheme" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
-                    <field name="profisc_sale_vat0_margin_scheme_tvsh" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_exampted_sales" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_0_on_supply" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_without_vat" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_export" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_taxable_value_20" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_vat20" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_taxable_value_10" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_vat10" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_taxable_value_6" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_vat6" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_reverse_charge" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_reverse_charge_vat" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_bad_debt" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_bad_debt_vat" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_vat0_margin_scheme" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
+                    <field name="profisc_sale_vat0_margin_scheme_tvsh" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"/>
                     <!--Purchase Tax Fields-->
                     <field name="profisc_te_perjashtuara" sum="Total" optional="hide" on_change="1"
                            column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_investime" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_te_perjashtuara_te_investimit" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_import" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_import_20_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_import_20" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_import_10_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_import_10" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_import_6_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_import_6" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_importe_te_investimit_20_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_importe_te_investimit_20" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_nga_furnitore_vendas_20_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_nga_furnitore_vendas_20" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_nga_furnitore_vendas_10_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_nga_furnitore_vendas_10" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_nga_furnitore_vendas_6_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_nga_furnitore_vendas_6" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_investime" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_te_perjashtuara_te_investimit" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_import" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_import_20_takse" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_import_20" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_import_10_takse" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_import_10" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_import_6_takse" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_import_6" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_importe_te_investimit_20_takse" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_importe_te_investimit_20" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_nga_furnitore_vendas_20_takse" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_nga_furnitore_vendas_20" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_nga_furnitore_vendas_10_takse" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_nga_furnitore_vendas_10" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_nga_furnitore_vendas_6_takse" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_nga_furnitore_vendas_6" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
                     <field name="profisc_te_investimit_nga_furnitore_vendas_20_takse" sum="Total" optional="hide"
-                           on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                           on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
                     <field name="profisc_te_investimit_nga_furnitore_vendas_20" sum="Total" optional="hide"
-                           on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_fermere_vendas_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_fermere_vendas" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_autongarkese_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_autongarkese" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_regullime_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_regullime" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_borxh_i_keq_takse" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
-                    <field name="profisc_borxh_i_keq" sum="Total" optional="hide" on_change="1" column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                           on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_fermere_vendas_takse" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_fermere_vendas" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_autongarkese_takse" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_autongarkese" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_regullime_takse" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_regullime" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_borxh_i_keq_takse" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
+                    <field name="profisc_borxh_i_keq" sum="Total" optional="hide" on_change="1"
+                           column_invisible="context.get('default_move_type') in ('out_invoice', 'out_refund', 'out_receipt')"/>
                 </list>
             </field>
         </record>

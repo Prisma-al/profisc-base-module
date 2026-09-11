@@ -15,6 +15,7 @@
                                 <field name="profisc_username" string="Profisc username"/>
                                 <field name="profisc_password" string="Profisc password" password="True"/>
                                 <field name="profisc_search_endpoint" string="Profisc search endpoint"/>
+                                <field name="profisc_get_data_back_endpoint"/>
                                 <field name="profisc_upload_invoice" string="Profisc upload invoice"/>
                                 <field name="profisc_upload_wtn_invoice" string="Profisc upload wtn invoice"/>
                                 <field name="profisc_cash_deposit" string="Profisc Register Cash Deposit"/>

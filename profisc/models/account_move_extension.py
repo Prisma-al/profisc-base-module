@@ -596,3 +596,117 @@ class AccountMoveExtension(models.Model):
                 move.profisc_invoice_type = profile_to_invoice_type[move.profisc_profile_id]
             else:
                 move.profisc_invoice_type = False
+
+        # krijimi i 1 funksioni qe merr data ne lidhje me faturat me timeout
+
+    def get_data_from_profisc(self):
+
+        # lista me resend statuset e profisc
+        resend_status = [
+            "-1",
+            "E920",
+            "E922",
+            "E999",
+            "E920",
+            "ETE991",
+            "ETF991",
+            "EPENDING",
+            "E999",
+            "E56",
+            "E50",
+            "E101",
+            "E999",
+            "E8101",
+            "E991",
+            "E992",
+            "E991",
+            "E994",
+            "E995",
+            "E996",
+            "E997",
+            "E998",
+            "E-1",
+            "ET991"
+        ]
+        # dict.fromkeys heq duplicates dhe shton ne lsite te gjtihe statuset pa E
+        resend_status = list(dict.fromkeys(
+            resend_status + [
+                status[1:] for status in resend_status
+                if status.startswith("E") and len(status) > 1
+            ]
+        ))
+
+        company = self.env.company
+        _logger.info(f"Company: {company.name}")
+        timeout_invoices = self.env["account.move"].search([
+            ("profisc_fisc_status_sale", "in", resend_status)
+        ])
+        all_invoices_iic = list(timeout_invoices.mapped("name"))
+        if not all_invoices_iic:
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {
+                    "title": _("Profisc"),
+                    "message": _("No timeout invoices found to update from Profisc."),
+                    "type": "info",
+                    "sticky": False,
+                }
+            }
+
+        if not company.profisc_get_data_back_endpoint:
+            raise UserError(_("Profisc get data back endpoint is not configured."))
+
+        endpoint = f"{company.profisc_api_endpoint}{company.profisc_get_data_back_endpoint}"
+
+        payload = {
+            "username": company.profisc_username,
+            "company": company.profisc_company_id,
+            "values": all_invoices_iic
+        }
+
+        _logger.info(f"Payload: {payload}")
+
+        response = requests.post(
+            endpoint,
+            data=json.dumps(payload),
+            headers=self.env['profisc.auth'].generateHeaders()
+        )
+
+        if response.status_code in (401, 403):
+            self.env['profisc.auth'].profisc_login()
+            return self.get_data_from_profisc()
+        if response.status_code != 200:
+            raise UserError(response.text)
+
+        update_invoices = 0
+        res = response.json()
+        _logger.info(f"Response: {res}")
+        if res.get('status') == True:
+            for item in res.get('content') or []:
+                inv_name = item.get('erpId')
+                old_iv = self.env['account.move'].search([('name', '=', inv_name)], limit=1)
+                updated_fields = {
+                    "profisc_iic": item.get('iic'),
+                    "profisc_fic": item.get('fic'),
+                    "profisc_eic": item.get('eic'),
+                    "profisc_qr_code": item.get('qrUrl'),
+                    "profisc_fisc_status_sale": item.get('fiscStatus'),
+                    "profisc_fic_error_code": "",
+                    "profisc_eic_error_description": "",
+                    "profisc_ubl_id": item.get("ublId"),
+                    "profisc_status_control": '3' if not item.get('cisErrorMessage') else '2'
+                }
+                old_iv.write(updated_fields)
+                update_invoices += 1
+        return res and {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Profisc"),
+                "message": _(
+                    f"{update_invoices} invoices were updated by getting the data from profisc after timeout process."),
+                "type": "warning",
+                "sticky": False,
+            }
+        }
